@@ -1,5 +1,15 @@
 import inquirer from "inquirer";
 import { connectToDb } from "./db/connection";
+import {
+  viewDepartments,
+  viewRoles,
+  viewEmployees,
+  addDepartment,
+  addRole,
+  addEmployee,
+  updateEmployeeRole,
+  endInteraction,
+} from "./db/inquirerFunctions";
 
 const interaction = async () => {
   const prompt = [
@@ -43,8 +53,7 @@ const interaction = async () => {
       // await updateEmployeeRole();
       break;
     case "Exit":
-      // await endInteraction();
-      // ! pool.end();
+      await endInteraction();
       process.exit();
   }
 

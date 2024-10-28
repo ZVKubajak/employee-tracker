@@ -217,3 +217,13 @@ export const addEmployee = async () => {
     console.error("Error adding employee:", error);
   }
 };
+
+// * Update Employee Role * //
+
+export const updateEmployeeRole = async () => {
+
+}
+
+// * End Interacction * //
+
+export const endInteraction = async () => await pool.end();
