@@ -1,6 +1,8 @@
 import inquirer from "inquirer";
 import { pool } from "./connection";
 
+// * View Table Functions * //
+
 export const viewDepartments = async () => {
   const query = "SELECT * FROM department;";
 
@@ -34,6 +36,101 @@ export const viewEmployees = async () => {
   }
 };
 
+// * Add Field Functions * //
+
+export const addDepartment = async () => {
+  const prompt = [
+    {
+      type: "input",
+      name: "department_name",
+      message: "Name of Department:",
+      validate: (input: string) => {
+        if (input.trim() === "") {
+          return "Department name cannot be empty.";
+        }
+        return true;
+      },
+    },
+  ];
+
+  const answers = await inquirer.prompt(prompt);
+
+  const query = `INSERT INTO department (name) VALUES ($1) RETURNING *;`;
+
+  try {
+    await pool.query(query, [answers.department_name]);
+
+    console.log("Department added successfully!");
+  } catch (error) {
+    console.error("Error adding department:", error);
+  }
+};
+
+export const addRole = async () => {
+  const prompt = [
+    {
+      type: "input",
+      name: "role_title",
+      message: "Role Title:",
+    },
+    {
+      type: "input",
+      name: "salary",
+      message: "Salary (number only):",
+      validate: (input: string) => {
+        const isValidNumber = /^[1-9]\d*$/.test(input);
+        return isValidNumber || "Please enter a valid positive number.";
+      },
+    },
+    {
+      type: "input",
+      name: "department_name",
+      message: "Related Department Name:",
+    },
+  ];
+
+  const answers = await inquirer.prompt(prompt);
+
+  // ! departmentId ! //
+  let departmentId;
+
+  try {
+    const departmentQuery = "SELECT id FROM department WHERE name = $1;";
+    const departmentResult = await pool.query(departmentQuery, [
+      answers.department_name,
+    ]);
+
+    if (departmentResult.rows.length > 0) {
+      departmentId = departmentResult.rows[0].id;
+    } else {
+      console.log(
+        "Department not found. Please make sure the department name is correct."
+      );
+      return;
+    }
+  } catch (error) {
+    console.error(`Error fetching department ID:`, error);
+    return;
+  }
+
+  const query = `
+    INSERT INTO role (title, salary, department_id)
+    VALUES ($1, $2, $3);
+  `;
+
+  try {
+    await pool.query(query, [
+      answers.role_title,
+      Number(answers.salary),
+      departmentId,
+    ]);
+
+    console.log("Role added successfully!");
+  } catch (error) {
+    console.error("Error adding role:", error);
+  }
+};
+
 export const addEmployee = async () => {
   const prompt = [
     {
@@ -49,7 +146,7 @@ export const addEmployee = async () => {
     {
       type: "input",
       name: "role_title",
-      message: "Role Title:",
+      message: "Current Role Title:",
     },
     {
       type: "input",
@@ -70,7 +167,9 @@ export const addEmployee = async () => {
     if (roleResult.rows.length > 0) {
       roleId = roleResult.rows[0].id;
     } else {
-      console.log("Role not found. Please make sure the role name is correct.");
+      console.log(
+        "Role not found. Please make sure the role title is correct."
+      );
       return;
     }
   } catch (error) {
@@ -115,6 +214,6 @@ export const addEmployee = async () => {
 
     console.log("Employee added successfully!");
   } catch (error) {
-    console.error("Error adding employee.", error);
+    console.error("Error adding employee:", error);
   }
 };
