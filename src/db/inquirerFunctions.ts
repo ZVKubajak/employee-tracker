@@ -1,6 +1,28 @@
 import inquirer from "inquirer";
 import { pool } from "./connection";
 
+export const viewDepartments = async () => {
+  const query = "SELECT * FROM department;";
+
+  try {
+    const result = await pool.query(query);
+    console.table(result.rows);
+  } catch (error) {
+    console.error("Error fetching departments:", error);
+  }
+};
+
+export const viewRoles = async () => {
+  const query = "SELECT * FROM role;";
+
+  try {
+    const result = await pool.query(query);
+    console.table(result.rows);
+  } catch (error) {
+    console.error("Error fetching roles:", error);
+  }
+};
+
 export const viewEmployees = async () => {
   const query = "SELECT * FROM employee;";
 
