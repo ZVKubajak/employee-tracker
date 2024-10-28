@@ -1,5 +1,5 @@
 import inquirer from "inquirer";
-import { pool, connectToDb } from "./db/connection";
+import { connectToDb } from "./db/connection";
 
 const interaction = async () => {
   const prompt = [
@@ -43,7 +43,8 @@ const interaction = async () => {
       // await updateEmployeeRole();
       break;
     case "Exit":
-      await pool.end();
+      // await endInteraction();
+      // ! pool.end();
       process.exit();
   }
 
