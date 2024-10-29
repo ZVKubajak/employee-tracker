@@ -91,7 +91,7 @@ export const addRole = async () => {
 
   const answers = await inquirer.prompt(prompt);
 
-  // ! departmentId ! //
+  // ! Department ID ! //
   let departmentId;
 
   try {
@@ -157,7 +157,7 @@ export const addEmployee = async () => {
 
   const answers = await inquirer.prompt(prompt);
 
-  // ! roleID ! //
+  // ! Role ID ! //
   let roleId;
 
   try {
@@ -177,7 +177,7 @@ export const addEmployee = async () => {
     return;
   }
 
-  // ! managerId ! //
+  // ! Manager ID ! //
   let managerId = null;
 
   if (answers.manager_name) {
@@ -221,8 +221,49 @@ export const addEmployee = async () => {
 // * Update Employee Role * //
 
 export const updateEmployeeRole = async () => {
+  try {
+    const { employeeId } = await inquirer.prompt([
+      {
+        type: "input",
+        name: "employeeId",
+        message: "Enter Employee's ID:",
+      },
+    ]);
 
-}
+    const employeeResult = await pool.query(
+      "SELECT * FROM employee WHERE id = $1",
+      [employeeId]
+    );
+
+    if (employeeResult.rows.length === 0) {
+      console.log("Employee not found.");
+      return;
+    }
+
+    const rolesResult = await pool.query("SELECT id, title FROM role");
+    const roles = rolesResult.rows.map((row) => ({
+      name: row.title,
+      value: row.id,
+    }));
+
+    const { newRole } = await inquirer.prompt([
+      {
+        type: "list",
+        name: "newRole",
+        message: "Select A New Role From The List:",
+        choices: roles,
+      },
+    ]);
+
+    await pool.query("UPDATE employee SET role_id = $1 WHERE id = $2", [
+      newRole,
+      employeeId,
+    ]);
+    console.log("Role updated successfully!");
+  } catch (error) {
+    console.error("Error updating employee's role:", error);
+  }
+};
 
 // * End Interacction * //
 
