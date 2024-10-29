@@ -1,5 +1,5 @@
 import inquirer from "inquirer";
-import { connectToDb } from "./db/connection";
+import { connectToDb } from "./db/connection.js";
 import {
   viewDepartments,
   viewRoles,
@@ -9,7 +9,7 @@ import {
   addEmployee,
   updateEmployeeRole,
   endInteraction,
-} from "./db/inquirerFunctions";
+} from "./db/inquirerFunctions.js";
 
 const interaction = async () => {
   const prompt = [

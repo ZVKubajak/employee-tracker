@@ -1,5 +1,5 @@
 import inquirer from "inquirer";
-import { pool } from "./connection";
+import { pool } from "./connection.js";
 
 // * View Table Functions * //
 
