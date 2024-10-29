@@ -15,7 +15,11 @@ export const viewDepartments = async () => {
 };
 
 export const viewRoles = async () => {
-  const query = "SELECT * FROM role;";
+  const query = `
+    SELECT role.id, role.title, role.salary, department.name AS department_name
+    FROM role
+    INNER JOIN department ON role.department_id = department.id;
+  `;
 
   try {
     const result = await pool.query(query);
@@ -26,7 +30,15 @@ export const viewRoles = async () => {
 };
 
 export const viewEmployees = async () => {
-  const query = "SELECT * FROM employee;";
+  const query = `
+    SELECT employee.first_name, employee.last_name, role.title AS role_title, manager.last_name AS manager_last_name
+    FROM
+      employee
+    LEFT JOIN
+      role ON employee.role_id = role.id
+    LEFT JOIN
+      employee AS manager ON employee.manager_id = manager.id;
+  `;
 
   try {
     const result = await pool.query(query);
