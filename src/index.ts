@@ -25,6 +25,7 @@ const interaction = async () => {
         "Add A Role",
         "Add An Employee",
         "Update An Employee Role",
+        "Exit",
       ],
     },
   ];
@@ -32,25 +33,25 @@ const interaction = async () => {
   const result = await inquirer.prompt(prompt);
   switch (result.action) {
     case "View All Departments":
-      // await viewDepartments();
+      await viewDepartments();
       break;
     case "View All Roles":
-      // await viewRoles();
+      await viewRoles();
       break;
     case "View All Employees":
-      // await viewEmployees();
+      await viewEmployees();
       break;
     case "Add A Department":
-      // await addDepartment();
+      await addDepartment();
       break;
     case "Add A Role":
-      // await addRole();
+      await addRole();
       break;
     case "Add An Employee":
-      // await addEmployee();
+      await addEmployee();
       break;
     case "Update An Employee Role":
-      // await updateEmployeeRole();
+      await updateEmployeeRole();
       break;
     case "Exit":
       await endInteraction();
