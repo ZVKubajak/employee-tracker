@@ -162,8 +162,8 @@ export const addEmployee = async () => {
     },
     {
       type: "input",
-      name: "manager_name",
-      message: "Manager's Name (leave blank if N/A):",
+      name: "manager_last_name",
+      message: "Manager's Last Name (leave blank if N/A):",
     },
   ];
 
@@ -192,18 +192,20 @@ export const addEmployee = async () => {
   // ! Manager ID ! //
   let managerId = null;
 
-  if (answers.manager_name) {
+  if (answers.manager_last_name) {
     try {
-      const managerQuery =
-        "SELECT id FROM employee WHERE first_name || '' '' || last_name = $1;";
+      const managerQuery = "SELECT id FROM employee WHERE last_name = $1;";
       const managerResult = await pool.query(managerQuery, [
-        answers.manager_name,
+        answers.manager_last_name,
       ]);
 
       if (managerResult.rows.length > 0) {
         managerId = managerResult.rows[0].id;
       } else {
-        console.log("Manager not found. Setting manager ID to null.");
+        console.log(
+          "Manager not found. Please make sure the manager's last name is correct."
+        );
+        return;
       }
     } catch (error) {
       console.error("Error fetching manager ID:", error);
