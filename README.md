@@ -19,7 +19,11 @@
 
   ## Usage
 
-  With the interface, the user is able to view the department, role, and employee tables. The user can also add to any of these tables with the ability to relate them to each other. Lastly, there is an option to change a current employee's role, and an option to end the application.
+  With the interface, the user is able to view the department, role, and employee tables. The user can also add to any of these tables with the ability to relate them to each other. Lastly, there is an option to change a current employee's role, and an option to     end the application.
+
+  Video Demonstration:
+  - Part 1: https://drive.google.com/file/d/1EGw1gS_imm6S8_35X9CG14hzxqW60v81/view
+  - Part 2: https://drive.google.com/file/d/1Nd-eeH_qcmCQAcjKgpvs9MV8hQG1EOqV/view
 
   ## License
 
