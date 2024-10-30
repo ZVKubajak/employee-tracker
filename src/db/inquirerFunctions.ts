@@ -281,4 +281,7 @@ export const updateEmployeeRole = async () => {
 
 // * End Interacction * //
 
-export const endInteraction = async () => await pool.end();
+export const endInteraction = async () => {
+  console.log("Exiting... Goodbye!");
+  process.exit();
+};
